@@ -8,7 +8,7 @@ class tcp_server {
 	DataOutputStream out;  
 	DataInputStream in;  
 	
-	int message;  
+	int message;
 	
 	public void listenSocket(){ 
 		try{  
@@ -18,28 +18,27 @@ class tcp_server {
 			
 			System.out.println("reading from socket..."); 
 			in = new DataInputStream(ns.getInputStream()); 
-			
-			message = in.readInt(); 
-			
-			//String gretting;
-
-			System.out.println("<= " + message); 
-
-			// if(message.compareTo("saludo") == 0){
-			// 	gretting = greatest(message);
-			// }else{
-			// 	gretting = "adios";
-			// }
-			  
-			System.out.println("writing to socket"); 
-			
 			out = new DataOutputStream(ns.getOutputStream());  
 			
+			int n;
+
+			int vector[] = new int[5];
+
+			for(int i = 0; i < 5; i++) {
+				n = in.readInt();
+				vector[i] = n;
+				System.out.println("==" + n + "=="); 
+			}
+
+			message = greatest(vector);
+
+			System.out.println("+ writing to socket"); 
+			System.out.println("=> " + message); 
+
 			out.flush();   
-			out.writeByte(message);  
+			out.writeInt(message);
 			out.writeByte('\n');     
 			out.flush();  
-
 		}
 		catch (IOException e) {  
 			System.out.println("Accept failed: 5000");   
@@ -69,8 +68,17 @@ class tcp_server {
 			
 	}
 
-	public String greatest(String x){
-		//x = "hey";
-		return "hey";
+	public int greatest(int[] x){
+		int biggest = 0;
+
+		System.out.println("+ calculating the biggest number. ");
+
+		for(int i = 0; i < x.length; i++) {
+			if(x[i] > biggest) biggest = x[i];
+		}
+
+		System.out.println("+ biggest number found. ");
+		
+		return biggest;
 	}
 }
